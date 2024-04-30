@@ -1,0 +1,499 @@
+#=================================================================#
+# Template file: ADCAEN1725S.template
+# Database for the records specific to the ADC simulated detector driver
+# Mark Rivers
+# February 28, 2016
+
+include "NDArrayBase.template"
+
+record(bo, "$(P)$(R)Acquire")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_ACQUIRE")
+   field(ZNAM, "Done")
+   field(ONAM, "Acquire")
+   info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)Acquire_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_ACQUIRE")
+   field(ZNAM, "Done")
+   field(ONAM, "Acquire")
+   field(SCAN, "I/O Intr")
+}
+
+record(stringin, "$(P)$(R)ModelName_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CN_MODEL_NAME")
+   field(VAL,  "Unknown")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)ModelCode_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_MODEL")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Channels_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_CHANNELS")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)FormFactor_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_FORM_FACTOR")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)FamilyCode_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_FAMILY_CODE")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(stringin, "$(P)$(R)AMCVersion_RBV")
+{
+   field(DTYP, "asynOctetRead")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CN_AMC_VERSION")
+   field(VAL,  "Unknown")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)PCBRevision_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_PCB_REVISION")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Nbits_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_N_BITS")
+   field(PREC, "3")
+   field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)SWTriggerMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_SWTRIGGER_MODES")
+  field(DESC,"Disable")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Ext. out only")
+  field(TWVL,"2")
+  field(TWST,"Acq only")
+  field(THVL,"3")
+  field(THST,"Acq and Ext. out")
+}
+
+record(mbbi, "$(P)$(R)SWTriggerMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_SWTRIGGER_MODES")
+  field(DESC,"Software trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Ext. out only")
+  field(TWVL,"2")
+  field(TWST,"Acq only")
+  field(THVL,"3")
+  field(THST,"Acq and Ext. out")
+}
+
+record(bo, "$(P)$(R)IRQEnable")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_ENABLE")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+   info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)IRQEnable_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_ENABLE")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)IRQLevel")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_LEVEL")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)IRQLevel_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_LEVEL")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)IRQStatusID")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_STATUS_ID")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)IRQStatusID_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_STATUS_ID")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)IRQEventNumber")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_EVENT_NUMBER")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)IRQEventNumber_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_EVENT_NUMBER")
+   field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)IRQMode")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_MODES")
+   field(ZNAM, "RORA")
+   field(ONAM, "ROKA")
+   info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)IRQMode_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_MODES")
+   field(ZNAM, "RORA")
+   field(ONAM, "ROKA")
+   field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Temperature_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_READ_TEMPERATURE")
+   field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)AcquisitionMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_ACQ_MODE")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Software controlled")
+  field(ONVL,"1")
+  field(ONST,"Ext signal IN")
+  field(TWVL,"2")
+  field(TWST,"First trigger controlled")
+}
+
+record(mbbi, "$(P)$(R)AcquisitionMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_ACQ_MODE")
+  field(DESC, "Acquisition mode")
+  field(ZRVL,"0")
+  field(ZRST,"Software controlled")
+  field(ONVL,"1")
+  field(ONST,"Ext signal IN")
+  field(TWVL,"2")
+  field(TWST,"First trigger controlled")
+}
+
+record(mbbo, "$(P)$(R)ExtTriggerMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_EXTTRIGGER_MODES")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Ext. out only")
+  field(TWVL,"2")
+  field(TWST,"Acq only")
+  field(THVL,"3")
+  field(THST,"Acq and Ext. out")
+}
+
+record(mbbi, "$(P)$(R)ExtTriggerMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_EXTTRIGGER_MODES")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Ext. out only")
+  field(TWVL,"2")
+  field(TWST,"Acq only")
+  field(THVL,"3")
+  field(THST,"Acq and Ext. out")
+}
+
+record(longout, "$(P)$(R)ChannelEnableMask") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_CHANNEL_ENABLE_MASK")
+  field(DESC, "Channel Enable Mask")
+}
+
+record(longin, "$(P)$(R)ChannelEnableMask_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_CHANNEL_ENABLE_MASK")
+  field(DESC, "Channel Enable Mask")
+}
+
+record(bo, "$(P)$(R)IOLevel")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IRQ_ENABLE")
+   field(ZNAM, "NIM")
+   field(ONAM, "TTL")
+   info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)IOLevel_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_IO_LEVEL")
+   field(ZNAM, "NIM")
+   field(ONAM, "TTL")
+   field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)RunSynchronizationMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_RUN_SYNCHRONIZATION_MODE")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Trig Out/In daisy")
+  field(TWVL,"2")
+  field(TWST,"Trig sin daisy")
+  field(THVL,"3")
+  field(THST,"GPIO daisy")
+}
+
+record(mbbi, "$(P)$(R)RunSynchronizationMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_RUN_SYNCHRONIZATION_MODE")
+  field(DESC, "Sync mode")
+  field(ZRVL,"0")
+  field(ZRST,"Disable")
+  field(ONVL,"1")
+  field(ONST,"Trig Out/In daisy")
+  field(TWVL,"2")
+  field(TWST,"Trig sin daisy")
+  field(THVL,"3")
+  field(THST,"GPIO daisy")
+}
+
+record(ao, "$(P)$(R)DPPEventAggregationThres")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_EVENT_AGGREGATION_THRES")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)DPPEventAggregationThres_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_EVENT_AGGREGATION_THRES")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DPPEventAggregationMax")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_EVENT_AGGREGATION_MAX")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)DPPEventAggregationMax_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_EVENT_AGGREGATION_MAX")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DPPNumAggregatesBLT")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_NUM_AGGREGATE_BLT")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)DPPNumAggregatesBLT_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_NUM_AGGREGATE_BLT")
+   field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)DPPAcquisitionMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_DPP_ACQ_MODE")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Oscilloscope")
+  field(ONVL,"1")
+  field(ONST,"List")
+  field(TWVL,"2")
+  field(TWST,"Mixed")
+}
+
+record(mbbi, "$(P)$(R)DPPAcquisitionMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_DPP_ACQ_MODE")
+  field(DESC, "Acquisition mode")
+  field(ZRVL,"0")
+  field(ZRST,"Oscilloscope")
+  field(ONVL,"1")
+  field(ONST,"List")
+  field(TWVL,"2")
+  field(TWST,"Mixed")
+}
+
+record(mbbo, "$(P)$(R)DPPAcquisitionParam") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_DPP_ACQ_PARAM")
+  field(DESC, "External trigger mode")
+  field(ZRVL,"0")
+  field(ZRST,"Energy only")
+  field(ONVL,"1")
+  field(ONST,"Time only")
+  field(TWVL,"2")
+  field(TWST,"Energy and time")
+  field(THVL,"3")
+  field(THST,"None")
+}
+
+record(mbbi, "$(P)$(R)DPPAcquisitionParam_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_DPP_ACQ_PARAM")
+  field(DESC, "Acquisition mode")
+  field(ZRVL,"0")
+  field(ZRST,"Energy only")
+  field(ONVL,"1")
+  field(ONST,"Time only")
+  field(TWVL,"2")
+  field(TWST,"Energy and time")
+  field(THVL,"3")
+  field(THST,"None")
+}
+
+record(mbbo, "$(P)$(R)DPPTriggerMode") {
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR))CN_DPP_TRIGGERMODE")
+  field(DESC, "DPP Pulse polarity")
+  field(ZRVL,"0")
+  field(ZRST,"Positive")
+  field(ONVL,"1")
+  field(ONST,"Negative")
+}
+
+record(mbbi, "$(P)$(R)DPPTriggerMode_RBV") {
+  field(SCAN, "I/O Intr")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR))CN_DPP_TRIGGERMODE")
+  field(DESC, "DPP Pulse polarity")
+  field(ZRVL, "0")
+  field(ZRST, "Positive")
+  field(ONVL, "1")
+  field(ONST, "Negative")
+}
+
+record(ao, "$(P)$(R)DPPPSDThresholdHold")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_THRHO")
+   info(autosaveFields, "VAL")
+}
+
+record(ai, "$(P)$(R)DPPPSDThresholdHold_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_THRHO")
+   field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)DPPPSDPileUp")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PUR")
+   field(ZNAM, "Detect only")
+   field(ONAM, "PUR")
+}
+
+record(bi, "$(P)$(R)DPPPSDPileUp_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PUR")
+   field(ZNAM, "Detect only")
+   field(ONAM, "PUR")
+   field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DPPPSDPileUpGap")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PURGAP")
+}
+
+record(ai, "$(P)$(R)DPPPSDPileUpGap_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PURGAP")
+   field(SCAN, "I/O Intr")
+}
