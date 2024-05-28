@@ -5,7 +5,9 @@ dbLoadDatabase("$(TOP)/dbd/ADCAEN1725SApp.dbd")
 ADCAEN1725SApp_registerRecordDeviceDriver(pdbbase) 
 
 # Prefix for all records
-epicsEnvSet("PREFIX", "1725CAEN:")
+epicsEnvSet("PREFIX", "DIAG:")
+# R for all records
+epicsEnvSet("RADIX", "CAEN_DET1")
 # The port name for the detector
 epicsEnvSet("PORT",   "mod0")
 # The PID of the CAEN CONET adaptor
@@ -37,15 +39,15 @@ epicsEnvSet("T8", "Chan8")
 #                      int maxBuffers, int maxMemory, int priority, int stackSize)
 ADCAEN1725SConfig("$(PORT)", 5,$(PID), $(NODE), 0, 0, 3)
 
-dbLoadRecords("$(TOP)/db/ADCAEN1725S.template",  "P=$(PREFIX),R=det1:,  PORT=$(PORT),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:0:,PORT=$(PORT),ADDR=0,TIMEOUT=1,NAME=$(T1)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:1:,PORT=$(PORT),ADDR=1,TIMEOUT=1,NAME=$(T2)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:2:,PORT=$(PORT),ADDR=2,TIMEOUT=1,NAME=$(T3)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:3:,PORT=$(PORT),ADDR=3,TIMEOUT=1,NAME=$(T4)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:4:,PORT=$(PORT),ADDR=4,TIMEOUT=1,NAME=$(T5)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:5:,PORT=$(PORT),ADDR=5,TIMEOUT=1,NAME=$(T6)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:6:,PORT=$(PORT),ADDR=6,TIMEOUT=1,NAME=$(T7)")
-dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=det1:7:,PORT=$(PORT),ADDR=7,TIMEOUT=1,NAME=$(T8)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725S.template",  "P=$(PREFIX),R=$(RADIX):,  PORT=$(PORT),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_0:,PORT=$(PORT),ADDR=0,TIMEOUT=1,NAME=$(T1)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_1:,PORT=$(PORT),ADDR=1,TIMEOUT=1,NAME=$(T2)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_2:,PORT=$(PORT),ADDR=2,TIMEOUT=1,NAME=$(T3)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_3:,PORT=$(PORT),ADDR=3,TIMEOUT=1,NAME=$(T4)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_4:,PORT=$(PORT),ADDR=4,TIMEOUT=1,NAME=$(T5)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_5:,PORT=$(PORT),ADDR=5,TIMEOUT=1,NAME=$(T6)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_6:,PORT=$(PORT),ADDR=6,TIMEOUT=1,NAME=$(T7)")
+dbLoadRecords("$(TOP)/db/ADCAEN1725SN.template", "P=$(PREFIX),R=$(RADIX)_7:,PORT=$(PORT),ADDR=7,TIMEOUT=1,NAME=$(T8)")
 
 # Create a standard arrays plugin, set it to get data from ADCSDetector driver.
 NDStdArraysConfigure("Array1", 3, 0, "$(PORT)", 0)
