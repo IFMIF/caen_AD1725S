@@ -420,7 +420,6 @@ void ADCAEN1725S::dataGrabTask() {
   int Nb = 0;
   while (1) {
     getIntegerParam(CN_Acquire, &acquire);
-
     /* If we are not acquiring then wait for a semaphore that is given when
      * acquisition is started */
     if (!acquire) {
@@ -445,8 +444,23 @@ void ADCAEN1725S::dataGrabTask() {
       status = asynError;
     }
 
-    if (bufferSize == 0)
+    epicsTimeGetCurrent(&startTime);
+    elapsedTime_ = epicsTimeDiffInSeconds(&startTime, &prevTime);
+
+    if (bufferSize == 0) {
+      if (elapsedTime_ >= 1) {
+        for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
+          status |= setDoubleParam(ch, CN_PSDRateEv,
+                                   (float)event_counter[ch] / elapsedTime_);
+          event_counter[ch] = 0;
+          callParamCallbacks(ch);
+        }
+        prevTime = startTime;
+      }
+      // epicsThreadSleep(numTimePoints * timeStep);
       continue;
+    }
+
     getIntegerParam(CN_AcquisitionMode, &acq_mode);
 
     Nb += bufferSize;
@@ -465,15 +479,15 @@ void ADCAEN1725S::dataGrabTask() {
     auto numTimePoints = TEMP_LENGTH_RECORD;
     NDDataType_t dataType = NDDataType_t::NDUInt16;
 
-    size_t dims[3];
-    dims[0] = MAX_SIGNALS;
-    dims[1] = numTimePoints;
-    // dims[2] = 3;
-    if (this->pArrays[0])
-      this->pArrays[0]->release();
-    this->pArrays[0] = pNDArrayPool->alloc(2, dims, dataType, 0, 0);
-    pData = (epicsUInt16 *)this->pArrays[0]->pData;
-    memset(pData, 0, MAX_SIGNALS * numTimePoints * sizeof(epicsUInt16));
+    // size_t dims[3];
+    // dims[0] = MAX_SIGNALS;
+    // dims[1] = numTimePoints;
+    // // dims[2] = 3;
+    // if (this->pArrays[0])
+    //   this->pArrays[0]->release();
+    // this->pArrays[0] = pNDArrayPool->alloc(2, dims, dataType, 0, 0);
+    // pData = (epicsUInt16 *)this->pArrays[0]->pData;
+    // memset(pData, 0, MAX_SIGNALS * numTimePoints * sizeof(epicsUInt16));
 
     for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
       event_counter[ch] = event_counter[ch] + numEvents[ch];
@@ -498,31 +512,20 @@ void ADCAEN1725S::dataGrabTask() {
           // Use waveform data here...
           size = (int)(waveform->Ns);  // Number of samples
           WaveLine = waveform->Trace1; // First trace (for DPP-PSD it is ALWAYS
-                                       // the Input Signal)
-          // for (auto s = 0; s < size; s++) {
-          //   pData[0 + MAX_SIGNALS * ch + s] = (epicsUInt16)(WaveLine[s]);
-          // }
-
-          // WaveLine = waveform->Trace2;
-          // DigitalWaveLine = waveform->DTrace1;
-          // DigitalWaveLine = waveform->DTrace2;
         }
       }
     }
 
-    pImage = this->pArrays[0];
+    // pImage = this->pArrays[0];
 
-    pImage->uniqueId = uniqueId_++;
-    getIntegerParam(NDArrayCounter, &arrayCounter);
-    arrayCounter++;
-    setIntegerParam(NDArrayCounter, arrayCounter);
-    epicsTimeGetCurrent(&startTime);
-    pImage->timeStamp = startTime.secPastEpoch + startTime.nsec / 1.e9;
-    updateTimeStamp(&pImage->epicsTS);
+    // pImage->uniqueId = uniqueId_++;
+    // getIntegerParam(NDArrayCounter, &arrayCounter);
+    // arrayCounter++;
+    // setIntegerParam(NDArrayCounter, arrayCounter);
+    // pImage->timeStamp = startTime.secPastEpoch + startTime.nsec / 1.e9;
+    // updateTimeStamp(&pImage->epicsTS);
 
-    elapsedTime_ = epicsTimeDiffInSeconds(&startTime, &prevTime);
-
-    if (elapsedTime_ > 1) {
+    if (elapsedTime_ >= 1) {
       for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
         status |= setDoubleParam(ch, CN_PSDRateEv,
                                  (float)event_counter[ch] / elapsedTime_);
@@ -532,11 +535,11 @@ void ADCAEN1725S::dataGrabTask() {
       prevTime = startTime;
     }
 
-    /* Get any attributes that have been defined for this driver */
-    this->getAttributes(pImage->pAttributeList);
+    // /* Get any attributes that have been defined for this driver */
+    // this->getAttributes(pImage->pAttributeList);
 
-    /* Call the NDArray callback */
-    doCallbacksGenericPointer(pImage, NDArrayData, 0);
+    // /* Call the NDArray callback */
+    // doCallbacksGenericPointer(pImage, NDArrayData, 0);
 
     // for (i = 0; i < MAX_SIGNALS; i++) {
     //   callParamCallbacks(i);
@@ -998,8 +1001,8 @@ asynStatus ADCAEN1725S::setChannelParameter() {
 
     if (ret) {
       asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-                "%s:%s: CAEN_DGTZ_SetDPPPreTriggerSize failed (%d)\n", driverName,
-                functionName, ret);
+                "%s:%s: CAEN_DGTZ_SetDPPPreTriggerSize failed (%d)\n",
+                driverName, functionName, ret);
       status = asynError;
       return (asynStatus)status;
     }
@@ -1011,8 +1014,8 @@ asynStatus ADCAEN1725S::setChannelParameter() {
 
     if (ret) {
       asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-                "%s:%s: CAEN_DGTZ_SetChannelPulsePolarity failed (%d)\n", driverName,
-                functionName, ret);
+                "%s:%s: CAEN_DGTZ_SetChannelPulsePolarity failed (%d)\n",
+                driverName, functionName, ret);
       status = asynError;
       return (asynStatus)status;
     }
