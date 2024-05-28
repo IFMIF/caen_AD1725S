@@ -18,6 +18,7 @@
 #define CaenAcquireString "CN_ACQUIRE"
 
 // Board info related
+#define CaenSaveParamString "CN_SAVE_PARAM"
 #define CaenModelNameString "CN_MODEL_NAME"
 #define CaenModelString "CN_MODEL"
 #define CaenChannelsString "CN_CHANNELS"
@@ -144,6 +145,7 @@ public:
 protected:
   int CN_Acquire;
 #define FIRST_CN_DETECTOR_PARAM CN_Acquire
+  int CN_SaveParam;
   int CN_ModelName;
   int CN_Model;
   int CN_Channels;

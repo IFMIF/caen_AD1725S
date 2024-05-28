@@ -13,7 +13,6 @@ record(bo, "$(P)$(R)Acquire")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_ACQUIRE")
    field(ZNAM, "Done")
    field(ONAM, "Acquire")
-   info(autosaveFields, "VAL")
 }
 
 record(bi, "$(P)$(R)Acquire_RBV")
@@ -22,6 +21,24 @@ record(bi, "$(P)$(R)Acquire_RBV")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_ACQUIRE")
    field(ZNAM, "Done")
    field(ONAM, "Acquire")
+   field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)SaveParam")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_SAVE_PARAM")
+   field(ZNAM, "Saved")
+   field(ONAM, "Saving")
+}
+
+record(bi, "$(P)$(R)SaveParam_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_SAVE_PARAM")
+   field(ZNAM, "Saved")
+   field(ONAM, "Saving")
    field(SCAN, "I/O Intr")
 }
 
@@ -377,7 +394,7 @@ record(mbbo, "$(P)$(R)DPPAcquisitionMode") {
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(OUT,  "@asyn($(PORT),$(ADDR))CN_DPP_ACQ_MODE")
-  field(DESC, "External trigger mode")
+  field(DESC, "Acquisition mode")
   field(ZRVL,"0")
   field(ZRST,"Oscilloscope")
   field(ONVL,"1")

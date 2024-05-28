@@ -95,6 +95,8 @@ ADCAEN1725S::ADCAEN1725S(const char *portName, int LinkType, int LinkNum,
 
   createParam(CaenAcquireString, asynParamInt32, &CN_Acquire);
 
+  createParam(CaenSaveParamString, asynParamInt32, &CN_SaveParam);
+
   // Board information
   createParam(CaenModelNameString, asynParamOctet, &CN_ModelName);
   createParam(CaenModelString, asynParamInt32, &CN_Model);
@@ -207,6 +209,7 @@ ADCAEN1725S::ADCAEN1725S(const char *portName, int LinkType, int LinkNum,
   }
 
   status |= setIntegerParam(CN_AcquisitionMode, 0);
+  status |= setIntegerParam(CN_SaveParam, 0);
 
   status |= setIntegerParam(CN_IRQLevel, 1);
   status |= setIntegerParam(CN_IRQStatusID, 0);
@@ -214,7 +217,7 @@ ADCAEN1725S::ADCAEN1725S(const char *portName, int LinkType, int LinkNum,
   status |= setIntegerParam(CN_IRQMode, 0);
   status |= setIntegerParam(CN_IRQEnable, 1);
 
-  status |= setIntegerParam(CN_SWTriggerMode, 0);
+  status |= setIntegerParam(CN_SWTriggerMode, 1);
   status |= setIntegerParam(CN_ExtTriggerMode, 0);
   status |= setIntegerParam(CN_RunSynchronizationMode, 0);
   status |= setIntegerParam(CN_IOLevel, 0);
@@ -232,6 +235,7 @@ ADCAEN1725S::ADCAEN1725S(const char *portName, int LinkType, int LinkNum,
 
     status |= setIntegerParam(i, CN_PreTrigger, 24);
     status |= setIntegerParam(i, CN_ChannelPulsePolarity, 0);
+    // status |= setIntegerParam(i, CN_DCOffset, 0);
 
     status |= setIntegerParam(i, CN_DPPNumEventAggregate, 1);
 
@@ -265,13 +269,13 @@ ADCAEN1725S::ADCAEN1725S(const char *portName, int LinkType, int LinkNum,
   }
 
   // createStaticEnums();
-  status = (epicsThreadCreate("dataGrabTask", epicsThreadPriorityMedium,
-                              epicsThreadGetStackSize(epicsThreadStackMedium),
+  status = (epicsThreadCreate("dataGrabTask", epicsThreadPriorityHigh,
+                              epicsThreadGetStackSize(epicsThreadStackBig),
                               (EPICSTHREADFUNC)dataGrabTaskC, this) == NULL);
 
-  status |= (epicsThreadCreate("statusTask", epicsThreadPriorityLow,
-                               epicsThreadGetStackSize(epicsThreadStackMedium),
-                               (EPICSTHREADFUNC)statusTaskC, this) == NULL);
+  //  status |= (epicsThreadCreate("statusTask", epicsThreadPriorityLow,
+  //                               epicsThreadGetStackSize(epicsThreadStackMedium),
+  //                               (EPICSTHREADFUNC)statusTaskC, this) == NULL);
 
   startEventId_ = epicsEventCreate(epicsEventEmpty);
 
@@ -408,12 +412,8 @@ void ADCAEN1725S::dataGrabTask() {
   int PurCnt[MAX_SIGNALS];
 
   int event_counter[MAX_SIGNALS];
-
   const char *functionName = "dataGrabTask";
-
   int acquire;
-
-  printf("%s:%s Running\n", driverName, functionName);
 
   lock();
 
@@ -447,7 +447,6 @@ void ADCAEN1725S::dataGrabTask() {
 
     if (bufferSize == 0)
       continue;
-
     getIntegerParam(CN_AcquisitionMode, &acq_mode);
 
     Nb += bufferSize;
@@ -500,13 +499,13 @@ void ADCAEN1725S::dataGrabTask() {
           size = (int)(waveform->Ns);  // Number of samples
           WaveLine = waveform->Trace1; // First trace (for DPP-PSD it is ALWAYS
                                        // the Input Signal)
-          for (auto s = 0; s < size; s++) {
-            pData[0 + MAX_SIGNALS * ch + s] = (epicsUInt16)(WaveLine[s]);
-          }
+          // for (auto s = 0; s < size; s++) {
+          //   pData[0 + MAX_SIGNALS * ch + s] = (epicsUInt16)(WaveLine[s]);
+          // }
 
-          WaveLine = waveform->Trace2;
-          DigitalWaveLine = waveform->DTrace1;
-          DigitalWaveLine = waveform->DTrace2;
+          // WaveLine = waveform->Trace2;
+          // DigitalWaveLine = waveform->DTrace1;
+          // DigitalWaveLine = waveform->DTrace2;
         }
       }
     }
@@ -523,7 +522,7 @@ void ADCAEN1725S::dataGrabTask() {
 
     elapsedTime_ = epicsTimeDiffInSeconds(&startTime, &prevTime);
 
-    if (elapsedTime_ > 0.5) {
+    if (elapsedTime_ > 1) {
       for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
         status |= setDoubleParam(ch, CN_PSDRateEv,
                                  (float)event_counter[ch] / elapsedTime_);
@@ -646,13 +645,11 @@ asynStatus ADCAEN1725S::writeInt32(asynUser *pasynUser, epicsInt32 value) {
              (function == CN_ChannelPulsePolarity)) {
 
   } else if ((function == CN_SWTriggerMode)) {
-  } else if ((function == CN_IRQEnable) /** || (function == CN_IRQLevel) ||
-             (function == CN_IRQStatusID) || (function == CN_IRQEventNumber) ||
-             (function == CN_IRQMode)*/) {
+  } else if ((function == CN_IRQEnable)) {
     setIRQ();
   } else if ((function == CN_ChannelEnableMask)) {
     setChannelEnableMask();
-  } else if ((function == CN_AcquisitionMode)) {
+  } else if ((function == CN_SaveParam)) {
     setDigitizerParameter();
   }
 
@@ -974,22 +971,51 @@ asynStatus ADCAEN1725S::setChannelParameter() {
     if (i % 2 == 0) {
       getIntegerParam(i, CN_RecordLength, recordlength + i);
       ret = CAEN_DGTZ_SetRecordLength(handle_, recordlength[i], i);
+      if (ret) {
+        asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                  "%s:%s: CAEN_DGTZ_SetRecordLength failed (%d)\n", driverName,
+                  functionName, ret);
+        status = asynError;
+        return (asynStatus)status;
+      }
     }
 
     // Set a DC offset to the input signal to adapt it to digitizer's dynamic
     // range
     getIntegerParam(i, CN_DCOffset, dcoffset + i);
     ret = CAEN_DGTZ_SetChannelDCOffset(handle_, i, dcoffset[i]);
+    if (ret) {
+      asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s:%s: CAEN_DGTZ_SetChannelDCOffset failed (%d)\n", driverName,
+                functionName, ret);
+      status = asynError;
+      return (asynStatus)status;
+    }
 
     // Set the Pre-Trigger size (in samples)
     getIntegerParam(i, CN_PreTrigger, pretrigger + i);
     ret = CAEN_DGTZ_SetDPPPreTriggerSize(handle_, i, pretrigger[i]);
 
+    if (ret) {
+      asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s:%s: CAEN_DGTZ_SetDPPPreTriggerSize failed (%d)\n", driverName,
+                functionName, ret);
+      status = asynError;
+      return (asynStatus)status;
+    }
     // Set the polarity for the given channel (CAEN_DGTZ_PulsePolarityPositive
     // or CAEN_DGTZ_PulsePolarityNegative)
     getIntegerParam(i, CN_ChannelPulsePolarity, polarity + i);
     ret = CAEN_DGTZ_SetChannelPulsePolarity(
         handle_, i, static_cast<CAEN_DGTZ_PulsePolarity_t>(polarity[i]));
+
+    if (ret) {
+      asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s:%s: CAEN_DGTZ_SetChannelPulsePolarity failed (%d)\n", driverName,
+                functionName, ret);
+      status = asynError;
+      return (asynStatus)status;
+    }
   }
 
   printf("%s:%s DPP Parameter Done\n", driverName, functionName);
