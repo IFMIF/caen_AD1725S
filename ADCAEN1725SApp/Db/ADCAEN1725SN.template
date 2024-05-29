@@ -14,6 +14,7 @@ record(longin, "$(P)$(R)Temperature_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_READ_TEMPERATURE")
    field(SCAN, "I/O Intr")
+   field(EGU, "°C")
 }
 
 # Input configuration
@@ -22,6 +23,7 @@ record(ao, "$(P)$(R)RecordLength")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_RECORD_LENGTH")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)RecordLength_RBV")
@@ -29,6 +31,7 @@ record(ai, "$(P)$(R)RecordLength_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_RECORD_LENGTH")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(ao, "$(P)$(R)PreTrigger")
@@ -36,6 +39,7 @@ record(ao, "$(P)$(R)PreTrigger")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_PRE_TRIGGER")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)PreTrigger_RBV")
@@ -43,6 +47,7 @@ record(ai, "$(P)$(R)PreTrigger_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_PRE_TRIGGER")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(mbbo, "$(P)$(R)PulsePolarity") {
@@ -106,6 +111,7 @@ record(ao, "$(P)$(R)Fixbaseline")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_FIX_BASELINE")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)Fixbaseline_RBV")
@@ -113,6 +119,7 @@ record(ai, "$(P)$(R)Fixbaseline_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_FIX_BASELINE")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(ao, "$(P)$(R)DCOffset")
@@ -120,6 +127,7 @@ record(ao, "$(P)$(R)DCOffset")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DC_OFFSET")
+   field(EGU, "lsb")
 }
 
 record(ai, "$(P)$(R)DCOffset_RBV")
@@ -127,6 +135,7 @@ record(ai, "$(P)$(R)DCOffset_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DC_OFFSET")
    field(SCAN, "I/O Intr")
+   field(EGU, "lsb")
 }
 
 record(bo, "$(P)$(R)InputDynamic")
@@ -171,6 +180,7 @@ record(ao, "$(P)$(R)DPPPSDThreshold")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_THR")
+   field(EGU, "lsb")
 }
 
 record(ai, "$(P)$(R)DPPPSDThreshold_RBV")
@@ -178,6 +188,7 @@ record(ai, "$(P)$(R)DPPPSDThreshold_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_THR")
    field(SCAN, "I/O Intr")
+   field(EGU, "lsb")
 }
 
 record(ao, "$(P)$(R)DPPPSDCFDDelay")
@@ -185,6 +196,7 @@ record(ao, "$(P)$(R)DPPPSDCFDDelay")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_CFDD")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)DPPPSDCFDDelay_RBV")
@@ -192,6 +204,7 @@ record(ai, "$(P)$(R)DPPPSDCFDDelay_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_CFDD")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(mbbo, "$(P)$(R)DPPPSDCFDFraction") {
@@ -301,6 +314,7 @@ record(ao, "$(P)$(R)DPPPSDLongGate")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_LGATE")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)DPPPSDLongGate_RBV")
@@ -308,6 +322,7 @@ record(ai, "$(P)$(R)DPPPSDLongGate_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_LGATE")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(ao, "$(P)$(R)DPPPSDShortGate")
@@ -315,6 +330,7 @@ record(ao, "$(P)$(R)DPPPSDShortGate")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_SGATE")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)DPPPSDShortGate_RBV")
@@ -322,6 +338,7 @@ record(ai, "$(P)$(R)DPPPSDShortGate_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_SGATE")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 record(ao, "$(P)$(R)DPPPSDGateOffset")
@@ -329,6 +346,7 @@ record(ao, "$(P)$(R)DPPPSDGateOffset")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PGATE")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)DPPPSDGateOffset_RBV")
@@ -336,6 +354,7 @@ record(ai, "$(P)$(R)DPPPSDGateOffset_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_PGATE")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 # Misc
@@ -345,6 +364,7 @@ record(ao, "$(P)$(R)DPPPSDTriggerValidationWindow")
    field(PINI, "YES")
    field(DTYP, "asynInt32")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_TVAW")
+   field(EGU, "samples")
 }
 
 record(ai, "$(P)$(R)DPPPSDTriggerValidationWindow_RBV")
@@ -352,6 +372,7 @@ record(ai, "$(P)$(R)DPPPSDTriggerValidationWindow_RBV")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_TVAW")
    field(SCAN, "I/O Intr")
+   field(EGU, "samples")
 }
 
 # Results
@@ -361,6 +382,8 @@ record(ai, "$(P)$(R)DPPPSDRateEv")
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_RATE_EV")
    field(SCAN, "I/O Intr")
+   field(EGU, "ev/s")
+   field(FLNK, "$(P)$(R)DPPPSDRateEvHist")
 }
 
 record(ai, "$(P)$(R)DPPPSDRateEv2")
@@ -368,6 +391,7 @@ record(ai, "$(P)$(R)DPPPSDRateEv2")
    field(DTYP, "asynFloat64")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_RATE_EV2")
    field(SCAN, "I/O Intr")
+   field(EGU, "ev/s")
 }
 
 record(ai, "$(P)$(R)DPPPSDChargeLong")
@@ -375,6 +399,8 @@ record(ai, "$(P)$(R)DPPPSDChargeLong")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_CHARGE_LONG")
    field(SCAN, "I/O Intr")
+   field(EGU, "bits")
+   field(FLNK, "$(P)$(R)DPPPSDfanoutprocess")
 }
 
 record(ai, "$(P)$(R)DPPPSDChargeShort")
@@ -382,6 +408,7 @@ record(ai, "$(P)$(R)DPPPSDChargeShort")
    field(DTYP, "asynInt32")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_DPP_PSD_CHARGE_SHORT")
    field(SCAN, "I/O Intr")
+   field(EGU, "bits")
 }
 
 record(calc, "$(P)$(R)DPPPSDcalc") {
@@ -391,16 +418,29 @@ record(calc, "$(P)$(R)DPPPSDcalc") {
     field(INPB, "$(P)$(R)DPPPSDChargeShort")
 }
 
-###################################################################
-#  Test                                    #
-###################################################################
-# record(waveform, "$(P)$(R)EnergyHistogram_RBV")
-# {
-#     field(DTYP, "asynInt16ArrayIn")
-#     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CN_ENERGY_HIST")
-#     field(FTVL, "USHORT")
-#     field(NELM, "16384")
-#     field(LOPR, "0")
-#     field(HOPR, "16383")
-#     field(SCAN, "I/O Intr")
-# }
+record(fanout, "$(P)$(R)DPPPSDfanoutprocess") {
+    field(LNK1, "$(P)$(R)DPPPSDcalc")
+    field(LNK2, "$(P)$(R)DPPPSDChargeLongHist")
+    field(LNK3, "$(P)$(R)DPPPSDChargeShortHist")
+}
+
+record(histogram, "$(P)$(R)DPPPSDRateEvHist") {
+  field(SVL, "$(P)$(R)DPPPSDRateEv")
+  field(NELM, "512")
+  field(ULIM,"1000")
+  field(LLIM,"0")
+}
+
+record(histogram, "$(P)$(R)DPPPSDChargeLongHist") {
+  field(SVL, "$(P)$(R)DPPPSDChargeLong")
+  field(NELM, "16384")
+  field(ULIM,"16383")
+  field(LLIM,"0")
+}
+
+record(histogram, "$(P)$(R)DPPPSDChargeShortHist") {
+  field(SVL, "$(P)$(R)DPPPSDChargeShort")
+  field(NELM, "16384")
+  field(ULIM,"16383")
+  field(LLIM,"0")
+}
