@@ -424,6 +424,7 @@ void ADCAEN1725S::dataGrabTask() {
      * acquisition is started */
     if (!acquire) {
       unlock();
+
       printf("%s:%s Wait\n", driverName, functionName);
       epicsEventWait(startEventId_);
       lock();
@@ -450,14 +451,15 @@ void ADCAEN1725S::dataGrabTask() {
     if (bufferSize == 0) {
       if (elapsedTime_ >= 1) {
         for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
-          status |= setDoubleParam(ch, CN_PSDRateEv,
-                                   (float)event_counter[ch] / elapsedTime_);
+          auto rate = (float)event_counter[ch] / elapsedTime_;
+          if (rate < 0.0)
+            rate = 0.0;
+          status |= setDoubleParam(ch, CN_PSDRateEv, rate);
           event_counter[ch] = 0;
           callParamCallbacks(ch);
         }
         prevTime = startTime;
       }
-      // epicsThreadSleep(numTimePoints * timeStep);
       continue;
     }
 
@@ -527,8 +529,10 @@ void ADCAEN1725S::dataGrabTask() {
 
     if (elapsedTime_ >= 1) {
       for (auto ch = 0; ch < MAX_SIGNALS; ch++) {
-        status |= setDoubleParam(ch, CN_PSDRateEv,
-                                 (float)event_counter[ch] / elapsedTime_);
+        auto rate = (float)event_counter[ch] / elapsedTime_;
+        if (rate < 0.0)
+          rate = 0.0;
+        status |= setDoubleParam(ch, CN_PSDRateEv, rate);
         event_counter[ch] = 0;
         callParamCallbacks(ch);
       }
