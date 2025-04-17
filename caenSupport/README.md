@@ -1,4 +1,8 @@
-Spinnaker SDK 2.0.0.147. 
-Make sure to install the same version on the target machine for Windows. 
-For Linux everything is contained in ADSpinnaker, nothing needs to be installed on the target machine.
+# caenSupport
 
+This folder provides the CAEN library used by this areaDetector module:
+- CAENDigitizer
+- CAEVMELib
+- CAENComm
+
+The libraries can be also downloaded on the CAEN website after creating account. 
