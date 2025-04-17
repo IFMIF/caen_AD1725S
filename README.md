@@ -4,7 +4,7 @@ An [EPICS](http://www.aps.anl.gov/epics) [areaDetector](https://github.com/areaD
 driver for [CAEN 1725S](https://www.caen.it/products/v1725/) digitizer board using the
 [CAENDigitizer](https://www.caen.it/products/caendigitizer-library/) library.
 
-The AD1725S is a VME digitizer board that can record signal up to 250 MS/s with 14 bis resolutions
+The AD1725S is a VME digitizer board that can record signal up to 250 MS/s with 14 bits resolutions. The digitizer is well suited for recording signal from fast radiation detectors.
 The digitizer can use different firmware that provides various features:
 - Pulse Height Analysis (DPP-PHA)
 - Pulse Shape Discrimination (DPP-PSD)
