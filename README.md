@@ -24,7 +24,7 @@ This repository is an attempt to create an EPICS support for the DPP-PSD firmwar
 
 ## Compiling
 
-The module itself is a standard areaDetector, please check the areaDetector module.
+The module itself is a standard areaDetector, please check the areaDetector documentation first to fully understand the process of building areaDetector.
 
 ### Prerequisites
 
